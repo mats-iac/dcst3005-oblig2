@@ -1,4 +1,3 @@
-
 # Én gjenbrukbar stack for hver tjeneste.
 # Hver instans får sin egen konfigurasjon og Terraform-state.
 
@@ -36,6 +35,8 @@ module "subnet" {
   prefix              = var.subnet_prefix
   delegate_web        = var.runtime == "webapp"
   allow_http_from     = var.allow_http_from
+  extra_tcp_port      = var.extra_tcp_port
+  extra_tcp_source    = var.extra_tcp_source
   tags                = local.tags
 }
 
