@@ -1,19 +1,20 @@
+
 output "resource_group_name" {
-  description = "Ressursgruppa alle stackene bruker."
-  value       = azurerm_resource_group.this.name
+  description = "Ressursgruppen som nå eies av shared-network."
+  value       = data.azurerm_resource_group.existing.name
 }
 
 output "location" {
-  description = "Regionen alt står i."
-  value       = azurerm_resource_group.this.location
+  description = "Azure-regionen."
+  value       = data.azurerm_resource_group.existing.location
 }
 
 output "vnet_name" {
-  description = "Navnet på VNet-et."
-  value       = module.vnet.name
+  description = "VNet som nå eies av shared-network."
+  value       = data.azurerm_virtual_network.existing.name
 }
 
 output "subnet_ids" {
-  description = "Subnett-ID per tjeneste."
+  description = "Subnett-ID per tjeneste. Eies fortsatt av network."
   value       = { for navn, s in module.subnet : navn => s.subnet_id }
 }
