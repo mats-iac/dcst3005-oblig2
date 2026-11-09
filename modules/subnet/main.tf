@@ -41,6 +41,23 @@ resource "azurerm_network_security_rule" "http" {
   destination_address_prefix  = "*"
 }
 
+resource "azurerm_network_security_rule" "extra_tcp" {
+  count = var.extra_tcp_port != null && var.extra_tcp_source != null ? 1 : 0
+
+  name                        = "allow-extra-tcp"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.this.name
+
+  priority                   = 110
+  direction                  = "Inbound"
+  access                     = "Allow"
+  protocol                   = "Tcp"
+  source_port_range          = "*"
+  destination_port_range     = tostring(var.extra_tcp_port)
+  source_address_prefix      = var.extra_tcp_source
+  destination_address_prefix = "*"
+}
+
 # Koblingen mellom subnettet og NSG-en er en egen ressurs, ikke et felt på
 # subnettet. Den er lett å overse når du lister hva en stack eier.
 resource "azurerm_subnet_network_security_group_association" "this" {

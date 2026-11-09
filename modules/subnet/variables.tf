@@ -39,3 +39,15 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "extra_tcp_port" {
+  description = "Valgfri ekstra TCP-port for innkommende trafikk."
+  type        = number
+  default     = null
+}
+
+variable "extra_tcp_source" {
+  description = "Tillatt kildeområde for den ekstra TCP-porten."
+  type        = string
+  default     = null
+}

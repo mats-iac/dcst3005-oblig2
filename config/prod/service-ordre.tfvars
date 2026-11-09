@@ -6,3 +6,6 @@ vm_size    = "Standard_B2als_v2"
 webapp_sku = "B1"
 
 ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGMQ32gu8mGVI86gkUex5JsBeg7WC58bsUOVuxmeHDJW oblig2-ingen-privat-nokkel"
+
+extra_tcp_port   = 8059
+extra_tcp_source = "172.16.101.0/24"
