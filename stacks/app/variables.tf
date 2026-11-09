@@ -1,16 +1,12 @@
+
 variable "kortnavn" {
   description = "Kortnavnet ditt. Settes i config/felles.tfvars."
   type        = string
 
   validation {
     condition     = can(regex("^[a-z0-9]{2,10}$", var.kortnavn))
-    error_message = "kortnavn må være 2–10 små bokstaver eller tall. Sett det i config/felles.tfvars."
+    error_message = "kortnavn må være 2-10 små bokstaver eller tall. Sett det i config/felles.tfvars."
   }
-}
-
-variable "location" {
-  description = "Azure-regionen. Settes i config/felles.tfvars."
-  type        = string
 }
 
 variable "miljo" {
@@ -48,19 +44,17 @@ variable "tjenester" {
   }
 }
 
-variable "vm_size" {
-  description = "VM-størrelsen for tjenester med runtime vm."
+# Beholdes midlertidig fordi config/felles.tfvars deles av alle stacks.
+# tflint-ignore: terraform_unused_declarations
+variable "location" {
+  description = "Azure-regionen fra felleskonfigurasjonen."
   type        = string
-  default     = "Standard_B2als_v2"
 }
 
+# Beholdes midlertidig fordi eksisterende app.tfvars fortsatt brukes.
+# tflint-ignore: terraform_unused_declarations
 variable "ssh_public_key" {
-  description = "Offentlig SSH-nøkkel til VM-ene. Ikke hemmelig."
+  description = "Offentlig SSH-nøkkel fra den gamle app-konfigurasjonen."
   type        = string
 }
 
-variable "webapp_sku" {
-  description = "SKU for App Service-planene til tjenester med runtime webapp."
-  type        = string
-  default     = "B1"
-}

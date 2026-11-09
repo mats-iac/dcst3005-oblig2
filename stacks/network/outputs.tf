@@ -14,7 +14,12 @@ output "vnet_name" {
   value       = data.azurerm_virtual_network.existing.name
 }
 
+
 output "subnet_ids" {
-  description = "Subnett-ID per tjeneste. Eies fortsatt av network."
-  value       = { for navn, s in module.subnet : navn => s.subnet_id }
+  description = "Subnett-ID per tjeneste, hentet fra eksisterende Azure-ressurser."
+  value = {
+    for navn, subnett in data.azurerm_subnet.existing :
+    navn => subnett.id
+  }
 }
+

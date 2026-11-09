@@ -4,14 +4,10 @@ variable "kortnavn" {
 
   validation {
     condition     = can(regex("^[a-z0-9]{2,10}$", var.kortnavn))
-    error_message = "kortnavn må være 2–10 små bokstaver eller tall. Sett det i config/felles.tfvars."
+    error_message = "kortnavn må være 2-10 små bokstaver eller tall. Sett det i config/felles.tfvars."
   }
 }
 
-variable "location" {
-  description = "Azure-regionen. Settes i config/felles.tfvars."
-  type        = string
-}
 
 variable "miljo" {
   description = "Miljøet. Settes av scripts/kjor.sh (TF_VAR_miljo), ikke i en .tfvars-fil."
@@ -32,8 +28,11 @@ variable "tjenester" {
   }))
 }
 
-variable "allow_http_from" {
-  description = "Hvem som får nå tjenestene på port 80."
+# Beholdes midlertidig fordi config/felles.tfvars deles av alle stacks.
+# tflint-ignore: terraform_unused_declarations
+variable "location" {
+  description = "Azure-regionen fra felleskonfigurasjonen."
   type        = string
-  default     = "Internet"
 }
+
+
