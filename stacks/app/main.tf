@@ -14,37 +14,25 @@ data "terraform_remote_state" "network" {
 
 locals {
   network = data.terraform_remote_state.network.outputs
+}
 
-  tags = {
-    eier  = var.kortnavn
-    miljo = var.miljo
-    kurs  = "dcst3005-oblig2"
+
+# Flytt VM, NIC og Public IP til service-stacken.
+# Behold alle fysiske ressurser i Azure.
+removed {
+  from = module.vm
+
+  lifecycle {
+    destroy = false
   }
 }
 
-module "vm" {
-  source   = "../../modules/vm"
-  for_each = { for navn, runtime in var.tjenester : navn => runtime if runtime == "vm" }
+# Flytt App Service-plan og Web App til service-stacken.
+# Behold alle fysiske ressurser i Azure.
+removed {
+  from = module.webapp
 
-  service             = each.key
-  resource_group_name = local.network.resource_group_name
-  location            = var.location
-  subnet_id           = local.network.subnet_ids[each.key]
-  size                = var.vm_size
-  ssh_public_key      = var.ssh_public_key
-  tags                = local.tags
-}
-
-module "webapp" {
-  source   = "../../modules/webapp"
-  for_each = { for navn, runtime in var.tjenester : navn => runtime if runtime == "webapp" }
-
-  service             = each.key
-  kortnavn            = var.kortnavn
-  miljo               = var.miljo
-  resource_group_name = local.network.resource_group_name
-  location            = var.location
-  subnet_id           = local.network.subnet_ids[each.key]
-  sku                 = var.webapp_sku
-  tags                = local.tags
+  lifecycle {
+    destroy = false
+  }
 }
